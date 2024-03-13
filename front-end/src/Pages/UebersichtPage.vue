@@ -3,11 +3,11 @@
     <h1>Übersicht</h1>
     <p>Hier ist eine Übersicht von leckeren Rezepten:</p>
     <div class="recipe-grid">
-      <div v-for="recipe in recipes" :key="recipe.recipe_id" class="recipe-item">
+      <div v-for="recipe in recipes" :key="recipe._id" class="recipe-item">
         <h3>{{ recipe.recipe_name }}</h3>
-        <button @click="goToDetailPage(recipe.recipe_id)">Detailansicht</button>
-        <button @click="toggleMarked(recipe.recipe_id)">
-          {{ isMarked(recipe.recipe_id) ? 'Markierung aufheben' : 'Markieren' }}
+        <button @click="goToDetailPage(recipe._id)">Detailansicht</button>
+        <button @click="toggleMarked(recipe._id)">
+          {{ isMarked(recipe._id) ? 'Markierung aufheben' : 'Markieren' }}
         </button>
       </div>
     </div>
@@ -15,17 +15,28 @@
 </template>
 
 <script>
-import { recipes } from '@/tempdata';
-
 export default {
   name: 'UebersichtPage',
   data() {
     return {
-      recipes,
+      recipes: [],
       markedRecipes: [],
     };
   },
+  mounted() {
+    this.fetchRecipes();
+  },
   methods: {
+    fetchRecipes() {
+      fetch('/api/recipes') // Senden einer GET-Anfrage an Ihren Backend-Server
+        .then(response => response.json())
+        .then(data => {
+          this.recipes = data; // Setzen der empfangenen Rezepte in die Datenliste
+        })
+        .catch(error => {
+          console.error('Fehler beim Abrufen der Rezepte:', error);
+        });
+    },
     goToDetailPage(recipeId) {
       this.$router.push(`/Uebersicht/${recipeId}`);
     },

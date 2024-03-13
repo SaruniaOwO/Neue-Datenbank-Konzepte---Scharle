@@ -6,9 +6,9 @@ const os = require('os');
 
 const clinet = new MongoClient(`mongodb+srv://CatLindaSara:<password>@cluster0.nbomujl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
 
-// Ermittle die IP-Adresse des lokalen Netzwerkinterfaces
+// Ermittelt die IP-Adresse des lokalen Netzwerkinterfaces
 const networkInterfaces = os.networkInterfaces();
-const ipAddress = networkInterfaces['Ethernet'][0].address; // Anpassen, falls du ein anderes Interface verwenden möchtest
+const ipAddress = networkInterfaces['Ethernet'][0].address; 
 
 app.get('/hello', async (req, res) => {
     await client.connect();

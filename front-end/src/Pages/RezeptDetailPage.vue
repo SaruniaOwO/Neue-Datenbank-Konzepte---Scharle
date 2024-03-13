@@ -1,50 +1,42 @@
 <template>
-  <div>
-    <h1>{{ recipeName }}</h1>
-    <p>Zutaten:</p>
-    <ul>
-      <li v-for="ingredient in ingredients" :key="ingredient.name">
-        {{ ingredient.name }}{{ ingredient.amount ? ' - ' + ingredient.amount : '' }}
-      </li>
-    </ul>
+  <div v-if="recipe">
+    <h1>{{ recipe.recipe_name }}</h1>
+    <p>Zutaten: {{ getIngredients(recipe.ingredients) }}</p>
+  </div>
+  <div v-else>
+    <p>Das Rezept konnte nicht gefunden werden.</p>
   </div>
 </template>
 
 <script>
-import { recipes } from '@/tempdata';
+import axios from 'axios';
 
 export default {
-  name: 'RezeptDetailPage',
+  name: 'DetailPage',
   data() {
     return {
-      recipeName: '',
-      ingredients: []
-    }
+      recipe: null,
+    };
   },
   mounted() {
-    this.fetchRecipeData();
+    this.fetchRecipe();
   },
   methods: {
-    fetchRecipeData() {
+    async fetchRecipe() {
       const recipeId = this.$route.params.recipeId;
-      const recipe = recipes.find(recipe => recipe.recipe_id === Number(recipeId));
-
-      if (recipe) {
-        this.recipeName = recipe.recipe_name;
-        this.ingredients = recipe.ingredients.map(ingredient => {
-          return {
-            name: ingredient.name,
-            amount: ingredient.amount
-          };
-        });
-      } else {
-        console.error('Rezept nicht gefunden.');
+      try {
+        const response = await axios.get(`http://localhost:8000/api/recipes/${recipeId}`);
+        this.recipe = response.data;
+      } catch (error) {
+        console.error('Fehler beim Abrufen des Rezepts:', error);
       }
-    }
-  }
-}
+    },
+    getIngredients(ingredients) {
+      return ingredients.map(ingredient => ingredient.name).join(', ');
+    },
+  },
+};
 </script>
-
 
 
 <style scoped>

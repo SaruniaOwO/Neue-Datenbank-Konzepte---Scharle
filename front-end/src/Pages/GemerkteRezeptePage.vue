@@ -17,33 +17,36 @@
 </template>
 
 <script>
-import { recipes } from '@/tempdata';
+import axios from 'axios';
 
 export default {
   name: 'GemerkteRezeptePage',
   data() {
     return {
-      recipes: recipes,
+      recipes: [],
       markedRecipes: [],
     };
   },
   methods: {
+    async fetchRecipes() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/recipes');
+        this.recipes = response.data;
+      } catch (error) {
+        console.error('Fehler beim Abrufen der Rezepte:', error);
+      }
+    },
     getRecipeName(recipeId) {
-      const recipe = this.recipes.find(recipe => recipe.recipe_id === recipeId);
+      const recipe = this.recipes.find(recipe => recipe._id === recipeId);
       return recipe ? recipe.recipe_name : '';
     },
     getRecipeIngredients(recipeId) {
-      const recipe = this.recipes.find(recipe => recipe.recipe_id === recipeId);
+      const recipe = this.recipes.find(recipe => recipe._id === recipeId);
       return recipe ? recipe.ingredients : [];
     },
   },
-  mounted() {
-    // Laden der markierten Rezepte aus dem LocalStorage beim Aufrufen der Seite
-    this.markedRecipes = JSON.parse(localStorage.getItem('markedRecipes')) || [];
-  },
 };
 </script>
-
 
 
 <style scoped>

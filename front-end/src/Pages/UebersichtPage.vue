@@ -5,55 +5,47 @@
     <div class="recipe-grid">
       <div v-for="recipe in recipes" :key="recipe._id" class="recipe-item">
         <h3>{{ recipe.recipe_name }}</h3>
+        <p>Zutaten: {{ getIngredients(recipe.ingredients) }}</p>
         <button @click="goToDetailPage(recipe._id)">Detailansicht</button>
-        <button @click="toggleMarked(recipe._id)">
-          {{ isMarked(recipe._id) ? 'Markierung aufheben' : 'Markieren' }}
-        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'UebersichtPage',
   data() {
     return {
       recipes: [],
-      markedRecipes: [],
     };
   },
   mounted() {
     this.fetchRecipes();
   },
   methods: {
-    fetchRecipes() {
-      fetch('/api/recipes') // Senden einer GET-Anfrage an Ihren Backend-Server
-        .then(response => response.json())
-        .then(data => {
-          this.recipes = data; // Setzen der empfangenen Rezepte in die Datenliste
-        })
-        .catch(error => {
-          console.error('Fehler beim Abrufen der Rezepte:', error);
-        });
-    },
-    goToDetailPage(recipeId) {
-      this.$router.push(`/Uebersicht/${recipeId}`);
-    },
-    toggleMarked(recipeId) {
-      const index = this.markedRecipes.indexOf(recipeId);
-      if (index !== -1) {
-        this.markedRecipes.splice(index, 1);
-      } else {
-        this.markedRecipes.push(recipeId);
+    async fetchRecipes() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/recipes');
+        this.recipes = response.data;
+      } catch (error) {
+        console.error('Fehler beim Abrufen der Rezepte:', error);
       }
     },
-    isMarked(recipeId) {
-      return this.markedRecipes.includes(recipeId);
+    goToDetailPage(recipeId) {
+      this.$router.push(`/rezept-detail/${recipeId}`);
+    },
+    getIngredients(ingredients) {
+      return ingredients.map(ingredient => ingredient.name).join(', ');
     },
   },
 };
 </script>
+
+
+
 
 <style scoped>
 .recipe-grid {

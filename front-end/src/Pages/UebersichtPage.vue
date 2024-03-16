@@ -3,10 +3,10 @@
     <h1>Übersicht</h1>
     <p>Hier ist eine Übersicht von leckeren Rezepten:</p>
     <div class="recipe-grid">
-      <div v-for="recipe in recipes" :key="recipe._id" class="recipe-item">
+      <div v-for="recipe in recipes" :key="recipe.recipe_id" class="recipe-item">
         <h3>{{ recipe.recipe_name }}</h3>
         <p>Zutaten: {{ getIngredients(recipe.ingredients) }}</p>
-        <button @click="goToDetailPage(recipe._id)">Detailansicht</button>
+        <button @click="goToDetailPage(recipe.recipe_id)">Detailansicht</button>
       </div>
     </div>
   </div>
@@ -35,7 +35,8 @@ export default {
       }
     },
     goToDetailPage(recipeId) {
-      this.$router.push(`/rezept-detail/${recipeId}`);
+    console.log('recipeId:', recipeId); // Überprüfen Sie die recipeId
+    this.$router.push(`/rezept-detail/${recipeId}`);
     },
     getIngredients(ingredients) {
       return ingredients.map(ingredient => ingredient.name).join(', ');

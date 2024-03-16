@@ -41,19 +41,20 @@ app.get('/api/recipes', async (req, res) => {
     }
 });
 
-// API-Endpunkt zum Abrufen eines bestimmten Rezepts
+// API-Endpunkt zum Abrufen eines spezifischen Rezepts basierend auf seiner ID
 app.get('/api/recipes/:recipeId', async (req, res) => {
-    const recipeId = req.params.recipeId;
     try {
         const db = client.db('Rezepte');
+        const recipeId = req.params.recipeId;
         const recipe = await db.collection('TEST2').findOne({ recipe_id: parseInt(recipeId) });
-        if (recipe) {
-            res.json(recipe);
-        } else {
+        if (!recipe) {
             res.status(404).json({ message: 'Rezept nicht gefunden' });
+        } else {
+            res.json(recipe);
         }
     } catch (error) {
         console.error('Fehler beim Abrufen des Rezepts:', error);
         res.status(500).json({ message: 'Interner Serverfehler' });
     }
 });
+

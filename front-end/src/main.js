@@ -17,9 +17,10 @@ const router = createRouter({
             component: GemerkteRezeptePage,
         },
         {
-            path: '/Uebersicht/:recipeId',
+            path: '/rezept-detail/:recipeId',
+            name: 'DetailPage',
             component: RezeptDetailPage,
-        }
+          }
     ]
 });
 

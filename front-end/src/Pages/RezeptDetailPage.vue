@@ -1,7 +1,12 @@
 <template>
   <div v-if="recipe">
     <h1>{{ recipe.recipe_name }}</h1>
-    <p>Zutaten: {{ getIngredients(recipe.ingredients) }}</p>
+    <p>Zutaten:</p>
+    <ul>
+      <li v-for="ingredient in recipe.ingredients" :key="ingredient.name">
+        {{ ingredient.name }}{{ ingredient.amount ? ' - ' + ingredient.amount : '' }}
+      </li>
+    </ul>
   </div>
   <div v-else>
     <p>Das Rezept konnte nicht gefunden werden.</p>
@@ -27,17 +32,16 @@ export default {
       try {
         const response = await axios.get(`http://localhost:8000/api/recipes/${recipeId}`);
         this.recipe = response.data;
+        if (!this.recipe) {
+          console.error('Rezept nicht gefunden');
+        }
       } catch (error) {
         console.error('Fehler beim Abrufen des Rezepts:', error);
       }
     },
-    getIngredients(ingredients) {
-      return ingredients.map(ingredient => ingredient.name).join(', ');
-    },
   },
 };
 </script>
-
 
 <style scoped>
 h1 {

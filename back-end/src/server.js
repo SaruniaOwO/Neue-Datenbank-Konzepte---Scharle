@@ -2,8 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const os = require('os');
+const { ObjectId } = require('mongodb');
+const bodyParser = require('body-parser');
+
 
 const app = express();
+app.use(express.json());
+app.use(bodyParser.json());
 
 // CORS aktivieren
 app.use(cors());
@@ -57,4 +62,37 @@ app.get('/api/recipes/:recipeId', async (req, res) => {
         res.status(500).json({ message: 'Interner Serverfehler' });
     }
 });
+
+app.post('/api/recipes', async (req, res) => {
+    try {
+        const db = client.db('Rezepte');
+        const collection = db.collection('TEST2');
+        
+        // Daten für das neue Rezept aus dem Anfragekörper erhalten
+        const { recipe_id, recipe_name, ingredients } = req.body[0]; // Beachte die Indexierung hier, da das Anfrageobjekt ein Array von Rezepten zu sein scheint
+
+        // Das neue Rezeptobjekt erstellen
+        const newRecipe = {
+            recipe_id: recipe_id,
+            recipe_name: recipe_name,
+            ingredients: ingredients
+        };
+
+        // Das neue Rezept in die Datenbank einfügen
+        await collection.insertOne(newRecipe);
+
+        console.log('Rezept erfolgreich erstellt:', newRecipe);
+        
+        // Erfolgsantwort senden
+        res.status(201).json({ message: 'Rezept erfolgreich erstellt', recipe: newRecipe });
+    } catch (error) {
+        console.error('Fehler beim Erstellen des Rezepts:', error);
+        res.status(500).json({ message: 'Interner Serverfehler' });
+    }
+});
+
+
+
+
+
 

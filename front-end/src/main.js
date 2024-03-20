@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import GemerkteRezeptePage from './Pages/GemerkteRezeptePage.vue';
 import UebersichtPage from './Pages/UebersichtPage.vue';
 import RezeptDetailPage from './Pages/RezeptDetailPage.vue'; 
+import RezeptErstellerPage from './Pages/RezeptErstellerPage.vue';
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
@@ -20,7 +21,11 @@ const router = createRouter({
             path: '/rezept-detail/:recipeId',
             name: 'DetailPage',
             component: RezeptDetailPage,
-          }
+        },
+        {
+            path: '/RezeptErsteller',
+            component: RezeptErstellerPage,
+        }
     ]
 });
 

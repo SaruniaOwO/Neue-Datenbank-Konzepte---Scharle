@@ -8,6 +8,7 @@
     <div class="nav-center">
       <router-link to="/Uebersicht" class="nav-link">Übersicht</router-link>
       <router-link to="/GemerkteRezepte" class="nav-link">Gemerkte Rezepte</router-link>
+      <router-link to="/RezeptErsteller" class="nav-link">Rezept erstellen</router-link> <!-- Hier hinzugefügt -->
     </div>
     <div class="nav-right">
       <div class="search-bar">

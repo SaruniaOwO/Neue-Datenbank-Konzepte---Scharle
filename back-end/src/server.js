@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Verbindungs-URI zur MongoDB-Datenbank
-const uri = 'mongodb+srv://CatLindaSara:TarTarTar@cluster0.nbomujl.mongodb.net/Rezepte?retryWrites=true&w=majority';
+const uri = 'mongodb://localhost:27017';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Verbindung zur Datenbank herstellen und Server starten
@@ -38,7 +38,7 @@ startServer();
 app.get('/api/recipes', async (req, res) => {
     try {
         const db = client.db('Rezepte');
-        const recipes = await db.collection('TEST2').find({}).toArray();
+        const recipes = await db.collection('Rezepte').find({}).toArray();
         res.json(recipes);
     } catch (error) {
         console.error('Fehler beim Abrufen der Rezepte:', error);
@@ -51,7 +51,7 @@ app.get('/api/recipes/:recipeId', async (req, res) => {
     try {
         const db = client.db('Rezepte');
         const recipeId = req.params.recipeId;
-        const recipe = await db.collection('TEST2').findOne({ recipe_id: parseInt(recipeId) });
+        const recipe = await db.collection('Rezepte').findOne({ recipe_id: parseInt(recipeId) });
         if (!recipe) {
             res.status(404).json({ message: 'Rezept nicht gefunden' });
         } else {
@@ -66,7 +66,7 @@ app.get('/api/recipes/:recipeId', async (req, res) => {
 app.post('/api/recipes', async (req, res) => {
     try {
         const db = client.db('Rezepte');
-        const collection = db.collection('TEST2');
+        const collection = db.collection('Rezepte');
         
         // Daten für das neue Rezept aus dem Anfragekörper erhalten
         const { recipe_id, recipe_name, ingredients } = req.body[0]; // Beachte die Indexierung hier, da das Anfrageobjekt ein Array von Rezepten zu sein scheint

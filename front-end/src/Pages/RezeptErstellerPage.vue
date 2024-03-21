@@ -48,7 +48,7 @@ export default {
         }
       } catch (error) {
         console.error("Fehler beim Hinzufügen des Rezepts:", error);
-        this.fehlermeldung = "Leider konnte das Rezept aufgrund von Servereinschränkungen nicht erstellt werden. Bitte versuchen Sie es erneut.";
+        this.fehlermeldung = "Leider konnte das Rezept nicht erstellt werden. Bitte versuchen Sie es erneut.";
       }
     },
     addIngredient() {

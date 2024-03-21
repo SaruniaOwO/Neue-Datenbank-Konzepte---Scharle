@@ -39,16 +39,24 @@ export default {
       fehlermeldung: "",
     };
   },
-  methods: { 
+  methods: {
+    generateId() {
+      // Einfache Methode zur Generierung einer zufälligen ID
+      return Math.floor(Math.random() * Date.now());
+    },
     async bestätigen() {
+      // Zufällige ID generieren und zu recipeData hinzufügen
+      this.recipeData.recipe_id = this.generateId();
+      console.log("Aktuelle recipeData vor dem Senden:", this.recipeData); // Daten überprüfen
       try {
-        const response = await axios.post('/api/recipes', this.recipeData); // Kein Array um das Rezeptobjekt
+        const response = await axios.post('http://localhost:8000/api/recipes', this.recipeData);
         if (response.status === 201) {
           this.$router.push('/api/recipes');
         }
       } catch (error) {
         console.error("Fehler beim Hinzufügen des Rezepts:", error);
         this.fehlermeldung = "Leider konnte das Rezept nicht erstellt werden. Bitte versuchen Sie es erneut.";
+        console.log(error.response); // Antwort vom Server für mehr Details
       }
     },
     addIngredient() {
@@ -59,6 +67,7 @@ export default {
     }
   },
 };
+
 </script>
 
 

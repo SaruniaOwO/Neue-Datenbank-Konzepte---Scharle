@@ -69,7 +69,7 @@ app.post('/api/recipes', async (req, res) => {
         const collection = db.collection('Rezepte');
         
         // Daten für das neue Rezept aus dem Anfragekörper erhalten
-        const { recipe_id, recipe_name, ingredients } = req.body[0]; // Beachte die Indexierung hier, da das Anfrageobjekt ein Array von Rezepten zu sein scheint
+        const { recipe_id, recipe_name, ingredients } = req.body; // korrekt, wenn das Frontend ein einzelnes Objekt sendet
 
         // Das neue Rezeptobjekt erstellen
         const newRecipe = {

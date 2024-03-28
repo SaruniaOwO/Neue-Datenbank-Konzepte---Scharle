@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Verbindungs-URI zur MongoDB-Datenbank
-const uri = 'mongodb://localhost:27017';
+const uri = 'mongodb://127.0.0.1:27017';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Verbindung zur Datenbank herstellen und Server starten

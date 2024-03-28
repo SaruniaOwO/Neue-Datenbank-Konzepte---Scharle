@@ -7,7 +7,6 @@
     </div>
     <div class="nav-center">
       <router-link to="/Uebersicht" class="nav-link">Übersicht</router-link>
-      <router-link to="/GemerkteRezepte" class="nav-link">Gemerkte Rezepte</router-link>
       <router-link to="/RezeptErsteller" class="nav-link">Rezept erstellen</router-link>
     </div>
     <div class="nav-right">

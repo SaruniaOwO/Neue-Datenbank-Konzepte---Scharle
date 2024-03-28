@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import GemerkteRezeptePage from './Pages/GemerkteRezeptePage.vue';
 import UebersichtPage from './Pages/UebersichtPage.vue';
 import RezeptDetailPage from './Pages/RezeptDetailPage.vue'; 
 import RezeptErstellerPage from './Pages/RezeptErstellerPage.vue';
@@ -14,11 +13,6 @@ const router = createRouter({
             path: '/Uebersicht',
             name: 'Uebersicht',
             component: UebersichtPage,
-        },
-        {
-            path: '/GemerkteRezepte',
-            name: 'GemerkteRezepte',
-            component: GemerkteRezeptePage,
         },
         {
             path: '/rezept-detail/:recipeId',

@@ -9,7 +9,9 @@
         </li>
       </ul>
       <!-- Button zum Löschen des Rezepts -->
-      <button @click="deleteRecipe">Rezept löschen</button>
+      <button @click="deleteRecipe" class="delete-button">Rezept löschen</button>
+      <!-- Meldung für erfolgreiches Löschen -->
+      <p v-if="deletionMessage" class="deletion-message">{{ deletionMessage }}</p>
     </div>
     <div v-else>
       <p>Das Rezept konnte nicht gefunden werden.</p>
@@ -25,6 +27,7 @@ export default {
   data() {
     return {
       recipe: null,
+      deletionMessage: '' // Variable für die Löschungsbestätigung
     };
   },
   mounted() {
@@ -47,8 +50,11 @@ export default {
       const recipeId = this.$route.params.recipeId;
       try {
         await axios.delete(`http://localhost:8000/api/recipes/${recipeId}`);
-        console.log('Rezept erfolgreich gelöscht');
-        // Weiterleitung oder Aktualisierung der Seite nach dem Löschen des Rezepts
+        this.deletionMessage = 'Rezept erfolgreich gelöscht'; // Setze die Löschungsbestätigung
+        // Weiterleitung zur Übersichtsseite nach 4 Sekunden
+        setTimeout(() => {
+          this.$router.push('/uebersicht');
+        }, 4000);
       } catch (error) {
         console.error('Fehler beim Löschen des Rezepts:', error);
       }
@@ -56,8 +62,6 @@ export default {
   },
 };
 </script>
-
-
 
 <style scoped>
 h1 {
@@ -86,4 +90,27 @@ li {
 .router-link:hover {
   background-color: #0056b3;
 }
+
+.delete-button {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-button:hover {
+  background-color: #2980b9;
+}
+
+.deletion-message {
+  color: green;
+}
+
 </style>

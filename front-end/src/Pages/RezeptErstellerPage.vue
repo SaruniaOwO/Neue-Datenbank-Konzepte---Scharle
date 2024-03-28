@@ -74,10 +74,7 @@ export default {
   },
 };
 
-
 </script>
-
-
 
 <style scoped>
 .recipe-form {

@@ -108,7 +108,27 @@ app.post('/api/recipes', async (req, res) => {
     }
 });
 
+app.delete('/api/recipes/:recipeId', async (req, res) => {
+    try {
+        const db = client.db('Rezepte');
+        const recipeId = req.params.recipeId; // Die ID des zu löschenden Rezepts
 
+        // Überprüfe, ob das Rezept existiert, das du löschen möchtest
+        const recipeExists = await db.collection('Rezepte').findOne({ recipe_id: parseInt(recipeId) });
+        if (!recipeExists) {
+            return res.status(404).json({ message: 'Rezept nicht gefunden' });
+        }
+
+        // Lösche das Rezept basierend auf der ID
+        await db.collection('Rezepte').deleteOne({ recipe_id: parseInt(recipeId) });
+        
+        // Antwort senden, dass das Rezept erfolgreich gelöscht wurde
+        res.json({ message: 'Rezept erfolgreich gelöscht' });
+    } catch (error) {
+        console.error('Fehler beim Löschen des Rezepts:', error);
+        res.status(500).json({ message: 'Interner Serverfehler beim Löschen' });
+    }
+});
 
 
 

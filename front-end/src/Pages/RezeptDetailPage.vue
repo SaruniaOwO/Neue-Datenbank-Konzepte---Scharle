@@ -1,15 +1,19 @@
 <template>
-  <div v-if="recipe">
-    <h1>{{ recipe.recipe_name }}</h1>
-    <p>Zutaten:</p>
-    <ul>
-      <li v-for="ingredient in recipe.ingredients" :key="ingredient.name">
-        {{ ingredient.name }}{{ ingredient.amount ? ' - ' + ingredient.amount : '' }}
-      </li>
-    </ul>
-  </div>
-  <div v-else>
-    <p>Das Rezept konnte nicht gefunden werden.</p>
+  <div>
+    <div v-if="recipe">
+      <h1>{{ recipe.recipe_name }}</h1>
+      <p>Zutaten:</p>
+      <ul>
+        <li v-for="ingredient in recipe.ingredients" :key="ingredient.name">
+          {{ ingredient.name }}{{ ingredient.amount ? ' - ' + ingredient.amount : '' }}
+        </li>
+      </ul>
+      <!-- Button zum Löschen des Rezepts -->
+      <button @click="deleteRecipe">Rezept löschen</button>
+    </div>
+    <div v-else>
+      <p>Das Rezept konnte nicht gefunden werden.</p>
+    </div>
   </div>
 </template>
 
@@ -39,9 +43,21 @@ export default {
         console.error('Fehler beim Abrufen des Rezepts:', error);
       }
     },
+    async deleteRecipe() {
+      const recipeId = this.$route.params.recipeId;
+      try {
+        await axios.delete(`http://localhost:8000/api/recipes/${recipeId}`);
+        console.log('Rezept erfolgreich gelöscht');
+        // Weiterleitung oder Aktualisierung der Seite nach dem Löschen des Rezepts
+      } catch (error) {
+        console.error('Fehler beim Löschen des Rezepts:', error);
+      }
+    },
   },
 };
 </script>
+
+
 
 <style scoped>
 h1 {

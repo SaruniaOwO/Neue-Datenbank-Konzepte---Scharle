@@ -15,35 +15,24 @@
         <input type="text" v-model="searchQuery" @keyup.enter="searchRecipes" class="search-input" placeholder="Rezepte suchen..." />
       </div>
       <button class="search-button" @click="searchRecipes">Suchen</button>
-      <button class="login-button" @click="openLoginModal">Login</button>
     </div>
-    <login-modal v-if="showLoginModal" @close="closeLoginModal"></login-modal>
   </div>
 </template>
 
 <script>
 import logo from '@/assets/logo.png';
-import LoginModal from './LoginModal.vue';
 
 export default {
   name: 'NavBar',
   components: {
-    LoginModal
   },
   data() {
     return {
       logo,
-      showLoginModal: false,
       searchQuery: '',
     }
   },
   methods: {
-    openLoginModal() {
-      this.showLoginModal = true;
-    },
-    closeLoginModal() {
-      this.showLoginModal = false;
-    },
     searchRecipes() {
       if (this.searchQuery.trim()) {
         // Verwenden des Routers, um programmatisch zur SearchResults-Komponente zu navigieren
@@ -122,15 +111,4 @@ export default {
   color: #ffd700;
 }
 
-.login-button {
-  background-color: transparent;
-  color: #ffffff;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.login-button:hover {
-  color: #ffd700;
-}
 </style>

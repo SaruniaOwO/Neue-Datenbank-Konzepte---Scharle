@@ -3,14 +3,13 @@
     <h2>Suchergebnisse</h2>
     <div v-if="results.length">
       <div v-for="recipe in results" :key="recipe.recipe_id" class="search-result-item">
-        <!-- Anzeigen der Rezeptdaten -->
         <h3>{{ recipe.recipe_name }}</h3>
-        <p>{{ recipe.ingredients }}</p>
-        <!-- Weitere Rezeptdaten anzeigen -->
+        <p>Zutaten: {{ getIngredients(recipe.ingredients) }}</p>
+        <button @click="goToDetailPage(recipe.recipe_id)">Detailansicht</button>
       </div>
     </div>
     <div v-else>
-      !Keine Ergebnisse gefunden.
+      <p>Keine Ergebnisse gefunden.</p>
     </div>
   </div>
 </template>
@@ -40,7 +39,13 @@ export default {
             console.error('Fehler bei der Suche:', error);
           });
       }
-    }
+    },
+    goToDetailPage(recipeId) {
+      this.$router.push(`/rezept-detail/${recipeId}`);
+    },
+    getIngredients(ingredients) {
+      return ingredients.map(ingredient => ingredient.name).join(', ');
+    },
   },
   watch: {
     '$route.query.query': function(newVal, oldVal) {
@@ -52,6 +57,18 @@ export default {
 
   
   <style>
-  /* Füge hier deinen CSS-Code hinzu */
+  button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
   </style>
   

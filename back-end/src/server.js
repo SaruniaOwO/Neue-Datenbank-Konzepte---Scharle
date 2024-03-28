@@ -46,6 +46,23 @@ app.get('/api/recipes', async (req, res) => {
     }
 });
 
+
+// Sucht Rezepte anhand Name
+app.get('/api/recipes/search', async (req, res) => {
+    try {
+        const query = req.query.query; // Der Suchbegriff aus der Anfrage
+        console.log('Suchbegriff:', query); // Hier überprüfst du den Wert von query
+        const db = client.db('Rezepte');
+        const collection = db.collection('Rezepte');
+        const SearchResult = await collection.find({ "recipe_name": { $regex: query, $options: "i" } }).toArray();
+        res.json(SearchResult); // Sende die Suchergebnisse zurück
+    } catch (error) {
+        console.error('Fehler bei der Suche:', error);
+        res.status(500).json({ message: 'Interner Serverfehler bei der Suche' });
+    }
+});
+
+
 // API-Endpunkt zum Abrufen eines spezifischen Rezepts basierend auf seiner ID
 app.get('/api/recipes/:recipeId', async (req, res) => {
     try {
@@ -90,6 +107,8 @@ app.post('/api/recipes', async (req, res) => {
         res.status(500).json({ message: 'Interner Serverfehler' });
     }
 });
+
+
 
 
 

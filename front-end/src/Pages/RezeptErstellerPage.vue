@@ -20,6 +20,10 @@
     <div v-if="fehlermeldung" class="fehlermeldung">
       {{ fehlermeldung }}
     </div>
+     <!-- Erfolgsmeldung-->
+    <div v-if="erfolgsmeldung" class="erfolgsmeldung">
+      {{ erfolgsmeldung }}
+    </div>
     <!-- Button Rezept hinzufügen -->
     <button type="submit">Bestätigen und Hinzufügen</button>
   </form>
@@ -37,26 +41,28 @@ export default {
         ingredients: [{ name: "", amount: "" }]
       },
       fehlermeldung: "",
+      erfolgsmeldung: "", // Hier speichern wir die Erfolgsmeldung
     };
   },
   methods: {
     generateId() {
-      // Einfache Methode zur Generierung einer zufälligen ID
       return Math.floor(Math.random() * Date.now());
     },
     async bestätigen() {
-      // Zufällige ID generieren und zu recipeData hinzufügen
       this.recipeData.recipe_id = this.generateId();
-      console.log("Aktuelle recipeData vor dem Senden:", this.recipeData); // Daten überprüfen
+      console.log("Aktuelle recipeData vor dem Senden:", this.recipeData);
       try {
         const response = await axios.post('http://localhost:8000/api/recipes', this.recipeData);
         if (response.status === 201) {
-          this.$router.push('/api/recipes');
+          // Setze die Erfolgsmeldung und zeige sie an, dann leere das Formular oder navigiere weg
+          this.erfolgsmeldung = "Rezept erfolgreich erstellt!";
+          this.recipeData = { recipe_name: "", ingredients: [{ name: "", amount: "" }] }; // Formular zurücksetzen
+          // Optional: Navigiere weg oder setze ein Timer, um die Meldung zu verstecken
+          setTimeout(() => { this.erfolgsmeldung = ""; this.$router.push('Uebersicht'); }, 3000); // 3 Sekunden warten, dann navigieren
         }
       } catch (error) {
         console.error("Fehler beim Hinzufügen des Rezepts:", error);
         this.fehlermeldung = "Leider konnte das Rezept nicht erstellt werden. Bitte versuchen Sie es erneut.";
-        console.log(error.response); // Antwort vom Server für mehr Details
       }
     },
     addIngredient() {
@@ -67,6 +73,7 @@ export default {
     }
   },
 };
+
 
 </script>
 
@@ -138,4 +145,12 @@ input[type="text"] {
   color: #ff7f7f;
   margin-top: 10px;
 }
+
+.erfolgsmeldung {
+  color: green;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
 </style>

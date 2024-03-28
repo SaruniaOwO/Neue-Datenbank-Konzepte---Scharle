@@ -5,27 +5,38 @@ import GemerkteRezeptePage from './Pages/GemerkteRezeptePage.vue';
 import UebersichtPage from './Pages/UebersichtPage.vue';
 import RezeptDetailPage from './Pages/RezeptDetailPage.vue'; 
 import RezeptErstellerPage from './Pages/RezeptErstellerPage.vue';
+import SearchResults from './components/SearchResults.vue';
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes: [
         {
             path: '/Uebersicht',
+            name: 'Uebersicht',
             component: UebersichtPage,
         },
         {
-            path: '/Gemerkterezepte',
+            path: '/GemerkteRezepte',
+            name: 'GemerkteRezepte',
             component: GemerkteRezeptePage,
         },
         {
             path: '/rezept-detail/:recipeId',
-            name: 'DetailPage',
+            name: 'RezeptDetail',
             component: RezeptDetailPage,
+            props: true,
         },
         {
             path: '/RezeptErsteller',
+            name: 'RezeptErsteller',
             component: RezeptErstellerPage,
-        }
+        },
+        {
+            path: '/search-results',
+            name: 'SearchResults',
+            component: SearchResults,
+            props: (route) => ({ query: route.query.query }),
+        },
     ]
 });
 

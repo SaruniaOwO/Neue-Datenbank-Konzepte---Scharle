@@ -8,13 +8,13 @@
     <div class="nav-center">
       <router-link to="/Uebersicht" class="nav-link">Übersicht</router-link>
       <router-link to="/GemerkteRezepte" class="nav-link">Gemerkte Rezepte</router-link>
-      <router-link to="/RezeptErsteller" class="nav-link">Rezept erstellen</router-link> <!-- Hier hinzugefügt -->
+      <router-link to="/RezeptErsteller" class="nav-link">Rezept erstellen</router-link>
     </div>
     <div class="nav-right">
       <div class="search-bar">
-        <input type="text" placeholder="Suchen..." class="search-input">
+        <input type="text" v-model="searchQuery" @keyup.enter="searchRecipes" class="search-input" placeholder="Rezepte suchen..." />
       </div>
-      <button class="search-button">Suchen</button>
+      <button class="search-button" @click="searchRecipes">Suchen</button>
       <button class="login-button" @click="openLoginModal">Login</button>
     </div>
     <login-modal v-if="showLoginModal" @close="closeLoginModal"></login-modal>
@@ -22,19 +22,20 @@
 </template>
 
 <script>
-import logo from '@/assets/logo.png'
+import logo from '@/assets/logo.png';
 import LoginModal from './LoginModal.vue';
 
 export default {
   name: 'NavBar',
+  components: {
+    LoginModal
+  },
   data() {
     return {
       logo,
       showLoginModal: false,
+      searchQuery: '',
     }
-  },
-  components: {
-    LoginModal
   },
   methods: {
     openLoginModal() {
@@ -42,6 +43,13 @@ export default {
     },
     closeLoginModal() {
       this.showLoginModal = false;
+    },
+    searchRecipes() {
+      if (this.searchQuery.trim()) {
+        // Verwenden des Routers, um programmatisch zur SearchResults-Komponente zu navigieren
+        // mit der Suchanfrage als Query-Parameter.
+        this.$router.push({ name: 'SearchResults', query: { query: this.searchQuery } });
+      }
     }
   }
 }

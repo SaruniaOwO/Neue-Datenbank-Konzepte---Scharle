@@ -1,12 +1,9 @@
 <template>
-  <!-- Formular-Felder für Rezepte -->
   <form class="formular" @submit.prevent="bestätigen">
-    <!-- Rezept-Titel -->
     <div class="eingaben">
       <label>Titel</label>
       <input type="text" v-model="recipeData.recipe_name" required />
     </div>
-    <!-- Zutaten -->
     <div class="eingaben">
       <label>Zutaten</label>
       <div v-for="(ingredient, index) in recipeData.ingredients" :key="index">
@@ -16,15 +13,12 @@
       </div>
       <button type="button" @click="addIngredient">Zutat hinzufügen</button>
     </div>
-    <!-- Fehlermeldung -->
     <div v-if="fehlermeldung" class="fehlermeldung">
       {{ fehlermeldung }}
     </div>
-     <!-- Erfolgsmeldung-->
     <div v-if="erfolgsmeldung" class="erfolgsmeldung">
       {{ erfolgsmeldung }}
     </div>
-    <!-- Button Rezept hinzufügen -->
     <button type="submit">Bestätigen und Hinzufügen</button>
   </form>
 </template>
@@ -41,7 +35,7 @@ export default {
         ingredients: [{ name: "", amount: "" }]
       },
       fehlermeldung: "",
-      erfolgsmeldung: "", // Hier speichern wir die Erfolgsmeldung
+      erfolgsmeldung: "", 
     };
   },
   methods: {
@@ -54,11 +48,9 @@ export default {
       try {
         const response = await axios.post('http://localhost:8000/api/recipes', this.recipeData);
         if (response.status === 201) {
-          // Setze die Erfolgsmeldung und zeige sie an, dann leere das Formular oder navigiere weg
           this.erfolgsmeldung = "Rezept erfolgreich erstellt!";
-          this.recipeData = { recipe_name: "", ingredients: [{ name: "", amount: "" }] }; // Formular zurücksetzen
-          // Optional: Navigiere weg oder setze ein Timer, um die Meldung zu verstecken
-          setTimeout(() => { this.erfolgsmeldung = ""; this.$router.push('Uebersicht'); }, 3000); // 3 Sekunden warten, dann navigieren
+          this.recipeData = { recipe_name: "", ingredients: [{ name: "", amount: "" }] }; 
+          setTimeout(() => { this.erfolgsmeldung = ""; this.$router.push('Uebersicht'); }, 3000); 
         }
       } catch (error) {
         console.error("Fehler beim Hinzufügen des Rezepts:", error);

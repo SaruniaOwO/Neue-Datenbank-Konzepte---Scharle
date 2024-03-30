@@ -34,8 +34,6 @@ export default {
   methods: {
     searchRecipes() {
       if (this.searchQuery.trim()) {
-        // Verwenden des Routers, um programmatisch zur SearchResults-Komponente zu navigieren
-        // mit der Suchanfrage als Query-Parameter.
         this.$router.push({ name: 'SearchResults', query: { query: this.searchQuery } });
       }
     }
@@ -102,7 +100,7 @@ export default {
   color: #ffffff;
   border: none;
   font-size: 16px;
-  margin-top: 5px; /* Abstand zwischen Suchleiste und Suchbutton */
+  margin-top: 5px; 
   cursor: pointer;
 }
 

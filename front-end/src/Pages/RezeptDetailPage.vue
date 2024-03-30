@@ -8,9 +8,7 @@
           {{ ingredient.name }}{{ ingredient.amount ? ' - ' + ingredient.amount : '' }}
         </li>
       </ul>
-      <!-- Button zum Löschen des Rezepts -->
       <button @click="deleteRecipe" class="delete-button">Rezept löschen</button>
-      <!-- Meldung für erfolgreiches Löschen -->
       <p v-if="deletionMessage" class="deletion-message">{{ deletionMessage }}</p>
     </div>
     <div v-else>
@@ -27,7 +25,7 @@ export default {
   data() {
     return {
       recipe: null,
-      deletionMessage: '' // Variable für die Löschungsbestätigung
+      deletionMessage: ''
     };
   },
   mounted() {
@@ -50,8 +48,7 @@ export default {
       const recipeId = this.$route.params.recipeId;
       try {
         await axios.delete(`http://localhost:8000/api/recipes/${recipeId}`);
-        this.deletionMessage = 'Rezept erfolgreich gelöscht'; // Setze die Löschungsbestätigung
-        // Weiterleitung zur Übersichtsseite nach 4 Sekunden
+        this.deletionMessage = 'Rezept erfolgreich gelöscht'; 
         setTimeout(() => {
           this.$router.push('/uebersicht');
         }, 4000);

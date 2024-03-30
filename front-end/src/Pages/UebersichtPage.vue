@@ -35,7 +35,7 @@ export default {
       }
     },
     goToDetailPage(recipeId) {
-    console.log('recipeId:', recipeId); // Überprüfen Sie die recipeId
+    console.log('recipeId:', recipeId); 
     this.$router.push(`/rezept-detail/${recipeId}`);
     },
     getIngredients(ingredients) {
